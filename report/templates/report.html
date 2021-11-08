@@ -1,0 +1,58 @@
+{% extends 'base.html' %} {%load static %} {% block content %} {% if data %}
+<h2>수면정보</h2>
+<div class="container sleep">
+  <h4>수면 통계</h4>
+  <p>{{data.sleep_time_summary}}</p>
+  <div class="comment-box"><h5>"{{data.sleep_time_comment}}"</h5></div>
+  <hr />
+  <h4>취침시간</h4>
+  <img src="{%static data.sleep_starttime_chart %}" alt="" />
+  <div class="comment-box"><h5>"{{data.sleep_starttime_comment}}"</h5></div>
+</div>
+<h2>복약정보</h2>
+<div class="container pill">
+  <h4>복약 통계</h4>
+  <p>{{data.pill_type_summary}}</p>
+  <p>{{data.pill_time_summary}}</p>
+  <img src="{%static data.pill_chart %}" alt="" />
+  <div class="comment-box"><h5>"{{data.pill_comment}}"</h5></div>
+</div>
+<h2>활동량</h2>
+<div class="container activity">
+  <h4>활동 통계</h4>
+  <p>{{data.activity_summary}}</p>
+  <hr />
+  <h4>순이 프로그램 참여</h4>
+  <p>{{data.program_summary}}</p>
+  <div class="comment-box"><h5>"{{data.activity_comment}}"</h5></div>
+  <hr />
+  <h4>
+    활동점수: {{data.activation_score}}점 ({{data.activation_percentage}})
+  </h4>
+  <div class="comment-box"><h5>"{{data.activation_comment}}"</h5></div>
+</div>
+<h2>순이와의 대화</h2>
+<div class="container message">
+  <h4>메시지 통계</h4>
+  <p>{{data.message_summary}}</p>
+  <div class="comment-box"><h5>"{{data.message_comment}}"</h5></div>
+  <hr />
+  <h4>순이가 알려주는 생활의 꿀팁</h4>
+  <p>{{data.life_tip|linebreaks}}</p>
+  <hr />
+  <h4>순이가 추천해주는 음식</h4>
+  <p>{{data.food_tip|linebreaks}}</p>
+  {% if data.pill_tip %}
+  <hr />
+  <h4>복약 도우미 순이</h4>
+  <p>{{data.pill_tip|linebreaks}}</p>
+  {%endif%}
+</div>
+<h2>다음 달 목표</h2>
+<div class="comment-box">
+  <h4>{{data.goal|linebreaks}}</h4>
+</div>
+
+{% else %}
+<div>정보가 없습니다.</div>
+{% endif %} {%endblock%}
