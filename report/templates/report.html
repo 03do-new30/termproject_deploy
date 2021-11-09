@@ -1,56 +1,92 @@
-{% extends 'base.html' %} {%load static %} {% block content %} {% if data %}
-<h2>수면정보</h2>
-<div class="container sleep">
-  <h4>수면 통계</h4>
-  <p>{{data.sleep_time_summary}}</p>
-  <div class="comment-box"><h5>"{{data.sleep_time_comment}}"</h5></div>
-  <hr />
-  <h4>취침시간</h4>
-  <img src="{%static data.sleep_starttime_chart %}" alt="" />
-  <div class="comment-box"><h5>"{{data.sleep_starttime_comment}}"</h5></div>
-</div>
-<h2>복약정보</h2>
+{% extends 'base.html' %} {%load static %} {% block content %}
+<h1 class="title primary">{{id}} 님의 8월 건강레포트</h1>
+{% if data%}
 <div class="container pill">
-  <h4>복약 통계</h4>
-  <p>{{data.pill_type_summary}}</p>
-  <p>{{data.pill_time_summary}}</p>
-  <img src="{%static data.pill_chart %}" alt="" />
-  <div class="comment-box"><h5>"{{data.pill_comment}}"</h5></div>
-</div>
-<h2>활동량</h2>
-<div class="container activity">
-  <h4>활동 통계</h4>
-  <p>{{data.activity_summary}}</p>
-  <hr />
-  <h4>순이 프로그램 참여</h4>
-  <p>{{data.program_summary}}</p>
-  <div class="comment-box"><h5>"{{data.activity_comment}}"</h5></div>
-  <hr />
-  <h4>
-    활동점수: {{data.activation_score}}점 ({{data.activation_percentage}})
+  <h2 class="secondary">복약 정보 💊</h2>
+  <br />
+  {%if data.pill_comment == "" %} 복약 정보가 없습니다. {%else %}
+  <div class="tertiary">
+    <span class="secondary">복약한 날:</span> {{data.total_pill_count}}일
+  </div>
+  <div class="tertiary">
+    <span class="secondary">일반약</span> {{data.common_pill_count}}회&nbsp&nbsp
+    <span class="secondary">기상약</span> {{data.wakeup_pill_count}}회&nbsp&nbsp
+    <span class="secondary">식후약</span> {{data.meal_pill_count}}회
+  </div>
+  <br />
+  <h4 class="secondary" style="display: flex">
+    복약 시간:
+    <img src="{%static data.pill_chart %}" width="380px" alt="" />
   </h4>
-  <div class="comment-box"><h5>"{{data.activation_comment}}"</h5></div>
+  <div class="tertiary">{{data.pill_time_summary}}</div>
+  <div class="tertiary">{{data.pill_comment}}</div>
+  {%endif %}
 </div>
-<h2>순이와의 대화</h2>
+<hr />
+<div class="container sleep">
+  <h2 class="secondary">수면 정보 💤</h2>
+  <br />
+  {%if data.sleep_starttime_comment == "" %} 수면 정보가 없습니다. {%else %}
+  <div class="secondary">{{data.sleep_time_summary|linebreaks}}</div>
+  <div class="tertiary">{{data.sleep_time_comment}}</div>
+  <br />
+  <h4 class="secondary" style="display: flex">
+    취침 시작 시간:
+    <img src="{%static data.sleep_starttime_chart %}" width="380px" alt="" />
+  </h4>
+  <div class="tertiary">{{data.sleep_starttime_comment|linebreaks}}</div>
+  {%endif %}
+</div>
+<hr />
+<div class="container activity">
+  <h2 class="secondary">활동량 정보 💥</h2>
+  <br />
+  <div class="tertiary">
+    <span class="secondary">매우활동</span> {{data.veryactive}}회&nbsp&nbsp
+    <span class="secondary">활동</span> {{data.active}}회&nbsp&nbsp
+    <span class="secondary">외출</span> {{data.outing}}회
+  </div>
+  <br />
+  <h4 class="secondary" style="display: flex; align-items: baseline">
+    활동점수:&nbsp;&nbsp;
+    <span class="tertiary" style="font-size: 75px"
+      >{{data.activation_score}}점</span
+    >
+    &nbsp;
+    <span class="tertiary">({{data.activation_percentage}})</span>
+  </h4>
+</div>
+<hr />
 <div class="container message">
-  <h4>메시지 통계</h4>
-  <p>{{data.message_summary}}</p>
-  <div class="comment-box"><h5>"{{data.message_comment}}"</h5></div>
-  <hr />
-  <h4>순이가 알려주는 생활의 꿀팁</h4>
-  <p>{{data.life_tip|linebreaks}}</p>
-  <hr />
-  <h4>순이가 추천해주는 음식</h4>
-  <p>{{data.food_tip|linebreaks}}</p>
-  {% if data.pill_tip %}
-  <hr />
-  <h4>복약 도우미 순이</h4>
-  <p>{{data.pill_tip|linebreaks}}</p>
+  <h2 class="secondary">순이와의 대화 💬</h2>
+  <br />
+  <span class="secondary">
+    from 순이 &nbsp;
+    <span class="tertiary" style="font-size: 50px">
+      {{data.message_from_sooni}}회 / {{data.message_to_sooni}}회</span
+    >
+    &nbsp; to 순이
+  </span>
+  <br />
+  <br />
+  {%if data.message_rate_high == 1 %}
+  <span class="secondary">
+    응답률 &nbsp;
+    <span class="tertiary" style="font-size: 42px">
+      {{data.message_response_rate}}% > 7.96%</span
+    >
+    &nbsp; 평균 응답률
+  </span>
+  {%elif data.message_rate_high == 0 %}
+  <span class="secondary">
+    응답률 &nbsp;
+    <span class="tertiary" style="font-size: 42px">
+      {{data.message_response_rate}}% < 7.96%
+    </span>
+    &nbsp; 평균 응답률
+  </span>
   {%endif%}
-</div>
-<h2>다음 달 목표</h2>
-<div class="comment-box">
-  <h4>{{data.goal|linebreaks}}</h4>
+  <div class="tertiary">{{data.message_comment}}</div>
 </div>
 
 {% else %}
