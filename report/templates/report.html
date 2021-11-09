@@ -41,6 +41,8 @@
 <div class="container activity">
   <h2 class="secondary">활동량 정보 💥</h2>
   <br />
+  {%if data.veryactive == "" and data.active == "" and data.outing == "" %} 활동
+  정보가 없습니다. {%else %}
   <div class="tertiary">
     <span class="secondary">매우활동</span> {{data.veryactive}}회&nbsp&nbsp
     <span class="secondary">활동</span> {{data.active}}회&nbsp&nbsp
@@ -55,6 +57,7 @@
     &nbsp;
     <span class="tertiary">({{data.activation_percentage}})</span>
   </h4>
+  {%endif%}
 </div>
 <hr />
 <div class="container message">
